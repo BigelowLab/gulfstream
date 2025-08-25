@@ -19,12 +19,12 @@ x = gstream::read_gsgi() |>
   saveRDS(ofile)
   
 # rapid-mocha
-ofile = gulfstream_path("inst/extdata/mocha-rapid.rds")
+ofile = gulfstream_path("inst/extdata/rapid_mocha.rds")
 x = gstream::read_rapid_mocha() |>
   saveRDS(ofile)
 
 # transport-mocha
-ofile = gulfstream_path("inst/extdata/mocha-transport.rds")
+ofile = gulfstream_path("inst/extdata/moc-transport.rds")
 x = gstream::read_moc_transports() |>
   saveRDS(ofile)
 
