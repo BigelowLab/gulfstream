@@ -1,0 +1,19 @@
+Package: gulfstream
+Title: gulfstream
+Description: Serving curated Gulf Stream data with R programming language.
+Version: 0.1
+Encoding: UTF-8
+Depends:
+    R (>= 4.2)
+Imports:
+  rlang,
+  stars,
+  sf,
+  dplyr,
+  shiny
+Maintainer: Ben Tupper <btupper@bigelow.org>
+Author: Ben Tupper <btupper@bigelow.org>
+URL: https://github.com/BigelowLab/gulfstream
+License: MIT + file LICENSE
+LazyData: true
+RoxygenNote: 7.3.2
