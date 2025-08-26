@@ -18,9 +18,9 @@ data frame with the following variables
 }
 }
 \source{
-<https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
+\href{https://www.ncei.noaa.gov/products/optimum-interpolation-sst}{OISST data at NCEI}
 
-<https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
+\href{https://www.ncei.noaa.gov/products/extended-reconstructed-sst}{ERSSTdata at NCEI}
 }
 \usage{
 read_patch_month()

@@ -2,25 +2,28 @@
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #' 
-#' @source <https://ocean.weather.gov/gulf_stream_text.php>
+#' @seealso \href{https://ocean.weather.gov/gulf_stream_text.php}{Ocean Weather}
 #' @export
 #' @return sf LINESTRING table
-#' #' @format Spatial data frame with the following variables
+#' @format data frame with the following variables
 #' \describe{
 #' \item{date}{Date class}
 #' \item{wall}{either "north" or "south"}
 #' \item{geom}{LINESTRING geometry}
 #' }
 read_usn = function(){
-  file = system.file("extdata/usn.rds")
-  readRDS(file)
+  file = system.file("extdata/usn.rds", package = "gulfstream")
+  x = readRDS(file) |>
+    dplyr::mutate(woy = lubridate::week(.data$date), .after = 1)
+  class(x) <- c("usn", class(x))
+  x
 }
 
 #' Read Gulf Stream Index data
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #'
-#' @source <https://noaa-edab.github.io/ecodata/index.html>
+#' @source \href{https://noaa-edab.github.io/ecodata/index.html}{ecodata website}
 #' @export
 #' @return table
 #' @format data frame with the following variables
@@ -32,7 +35,7 @@ read_usn = function(){
 #' \item{EPU}{charcater, regional assignment label}
 #' }
 read_gsi = function(){
-  file = system.file("extdata/gsi.rds")
+  file = system.file("extdata/gsi.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -40,7 +43,7 @@ read_gsi = function(){
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #'
-#' @source <https://www2.whoi.edu/staff/ykwon/data/>
+#' @source \href{https://www2.whoi.edu/staff/ykwon/data/}{Dr. Young-Oh Kwon lab}
 #' @export
 #' @return  table
 #' @format data frame with the following variables
@@ -51,7 +54,7 @@ read_gsi = function(){
 #' \item{dSST.deseason}{numeric, deseasoned SST difference}
 #' }
 read_gsgi = function(){
-  file = system.file("extdata/gsgi.rds")
+  file = system.file("extdata/gsgi.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -61,7 +64,7 @@ read_gsgi = function(){
 #' Values are in Svedrups (Sv).
 #' 
 #'
-#' @source <http://www.rapid.ac.uk/rapidmoc>
+#' @source \href{http://www.rapid.ac.uk/rapidmoc}{RAPID MOC website}
 #' @export
 #' @return  table
 #' @format data frame with the following variables
@@ -78,7 +81,7 @@ read_gsgi = function(){
 #' \item{t_bw10}{> 5000m Antarctic Bottom Water}
 #' }
 read_moc_transports = function(){
-  file = system.file("extdata/moc-transports.rds")
+  file = system.file("extdata/moc-transports.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -86,9 +89,9 @@ read_moc_transports = function(){
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #' 
-#' @source <https://mocha.earth.miami.edu/mocha/data/index.html>
+#' @source \href{https://mocha.earth.miami.edu/mocha/data/index.html}{RAPID-MOCHA at Univ of Miami Ocean Tech Lab}
 #' @export
-#' @return  table
+#' @return table
 #' @format data frame with the following variables
 #' \describe{
 #' \item{Q_eddy}{The interior gyre component due to spatially correlated v_T variability across the interior. (W)}
@@ -119,7 +122,7 @@ read_moc_transports = function(){
 #' \item{hour}{Hour of the day when the measurement occurred(in UTC) (NA)}
 #' }
 read_rapid_mocha = function(){
-  file = system.file("extdata/rapid_mocha.rds")
+  file = system.file("extdata/rapid_mocha.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -127,8 +130,8 @@ read_rapid_mocha = function(){
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #' 
-#' @source <https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
-#' @source <https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
+#' @source \href{https://www.ncei.noaa.gov/products/optimum-interpolation-sst}{OISST data at NCEI}
+#' @source \href{https://www.ncei.noaa.gov/products/extended-reconstructed-sst}{ERSSTdata at NCEI}
 #' @export
 #' @return  table
 #' @format data frame with the following variables
@@ -144,7 +147,7 @@ read_rapid_mocha = function(){
 #' \item{max}{max of values in region, deg C}
 #' }
 read_patch_month = function(){
-  file = system.file("extdata/patch_month.rds")
+  file = system.file("extdata/patch_month.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -154,8 +157,6 @@ read_patch_month = function(){
 #' 
 #' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
 #' 
-#' @source <https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
-#' @source <https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
 #' @export
 #' @return sf table
 #' @format spatial data frame with the following variables
@@ -163,7 +164,7 @@ read_patch_month = function(){
 #' \item{name}{chr, the name of the region}
 #' }
 read_patch_bbs = function(){
-  file = system.file("extdata/patch_bbs.rds")
+  file = system.file("extdata/patch_bbs.rds", package = "gulfstream")
   readRDS(file)
 }
 
@@ -172,10 +173,10 @@ read_patch_bbs = function(){
 #' 
 #' Clipped with this bounding box: xmin = -80, ymin = 30, xmax = -10, ymax = 66
 #' 
-#' @source <https://www.naturalearthdata.com/>
+#' @source \href{https://www.naturalearthdata.com/}{NaturalEarth data via rnaturalearth R package}
 #' @export
 #' @return sfc_GEOMETRY object
 read_coastline = function(){
-  file = system.file("extdata/coast_medium.rds")
+  file = system.file("extdata/coast_medium.rds", package = "gulfstream")
   readRDS(file)
 }

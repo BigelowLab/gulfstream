@@ -9,11 +9,6 @@ spatial data frame with the following variables
 \item{name}{chr, the name of the region}
 }
 }
-\source{
-<https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
-
-<https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
-}
 \usage{
 read_patch_bbs()
 }

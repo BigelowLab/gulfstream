@@ -35,7 +35,7 @@ data frame with the following variables
 }
 }
 \source{
-<https://mocha.earth.miami.edu/mocha/data/index.html>
+\href{https://mocha.earth.miami.edu/mocha/data/index.html}{RAPID-MOCHA at Univ of Miami Ocean Tech Lab}
 }
 \usage{
 read_rapid_mocha()

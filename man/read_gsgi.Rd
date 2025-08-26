@@ -13,7 +13,7 @@ data frame with the following variables
 }
 }
 \source{
-<https://www2.whoi.edu/staff/ykwon/data/>
+\href{https://www2.whoi.edu/staff/ykwon/data/}{Dr. Young-Oh Kwon lab}
 }
 \usage{
 read_gsgi()

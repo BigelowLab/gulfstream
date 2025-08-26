@@ -19,7 +19,7 @@ data frame with the following variables
 }
 }
 \source{
-<http://www.rapid.ac.uk/rapidmoc>
+\href{http://www.rapid.ac.uk/rapidmoc}{RAPID MOC website}
 }
 \usage{
 read_moc_transports()

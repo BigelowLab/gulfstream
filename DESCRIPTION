@@ -9,6 +9,8 @@ Imports:
   rlang,
   stars,
   sf,
+  lubridate,
+  ggplot2,
   dplyr,
   shiny
 Maintainer: Ben Tupper <btupper@bigelow.org>

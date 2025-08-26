@@ -3,21 +3,23 @@
 \name{read_usn}
 \alias{read_usn}
 \title{Read US Navy gulf stream wall data}
-\source{
-<https://ocean.weather.gov/gulf_stream_text.php>
-}
-\usage{
-read_usn()
-}
-\value{
-sf LINESTRING table
-#' @format Spatial data frame with the following variables
+\format{
+data frame with the following variables
 \describe{
 \item{date}{Date class}
 \item{wall}{either "north" or "south"}
 \item{geom}{LINESTRING geometry}
 }
 }
+\usage{
+read_usn()
+}
+\value{
+sf LINESTRING table
+}
 \description{
 Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
+}
+\seealso{
+\href{https://ocean.weather.gov/gulf_stream_text.php}{Ocean Weather}
 }

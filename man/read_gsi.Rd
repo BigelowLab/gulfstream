@@ -14,7 +14,7 @@ data frame with the following variables
 }
 }
 \source{
-<https://noaa-edab.github.io/ecodata/index.html>
+\href{https://noaa-edab.github.io/ecodata/index.html}{ecodata website}
 }
 \usage{
 read_gsi()

@@ -4,7 +4,7 @@
 \alias{read_coastline}
 \title{Read a simplified medium resolution coastline for the Northwest Atlantic}
 \source{
-<https://www.naturalearthdata.com/>
+\href{https://www.naturalearthdata.com/}{NaturalEarth data via rnaturalearth R package}
 }
 \usage{
 read_coastline()
