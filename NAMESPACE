@@ -3,7 +3,7 @@
 S3method(plot,gsgi)
 S3method(plot,gsi)
 S3method(plot,patch_month)
-S3method(plot,path_month_diff)
+S3method(plot,patch_month_diff)
 S3method(plot,rapid_moc_transports)
 S3method(plot,rapid_mocha_time)
 S3method(plot,usn)

@@ -35,20 +35,33 @@ patch_month_diff = function(x = read_patch_month(), what = "median"){
 #' @return ggplot2 object
 plot.patch_month = function(x = read_patch_month(), y,
                             what = "median",
-                            view = "diff",
+                            view = c("diff", "map"),
                             ...){
   
   what = tolower(what[1])
   if (!what %in% colnames(x)) stop("please specify a variable in x - this wasn't found:", what)
+  view = tolower(view[1])
+  switch(view,
+         "diff" = {
+                    d = patch_month_diff(x, what = what) 
+                    gg = plot(d, ...) 
+                    return(gg)
+                  },
+         "map" = {
+           bb = read_patch_bbs() |>
+             dplyr::slice(1:2) |>
+             dplyr::rename(region = "name")
+           coast = read_coastline()
+           bathy = read_bathymetry()
+           gg = ggplot2::ggplot() + 
+             ggplot2::geom_sf(data = coast) + 
+             ggplot2::geom_sf(data = bb,
+                              mapping = ggplot2::aes(fill = region)) + 
+             ggplot2::coord_sf(crs = "+proj=lcc +lat_1=50 +lat_2=65 +lon_0=-50")
+           gg},
+         NULL
+        )
   
-  if (tolower(view[1]) == "diff"){
-    d = diff_patch_month(x, what = what) |>
-      dplyr::group_by(source)
-    gg = plot(d, ...) 
-    return(gg)
-  }
-  
- 
   
 }
 
@@ -59,7 +72,7 @@ plot.patch_month = function(x = read_patch_month(), y,
 #' @param y ignored
 #' @param ... ignored
 #' @return ggplot2 object
-plot.path_month_diff = function(x = patch_month_diff(), y, 
+plot.patch_month_diff = function(x = patch_month_diff(), y, 
                                 ...){
   
   what = tolower(x$what[1])
@@ -70,6 +83,6 @@ plot.path_month_diff = function(x = patch_month_diff(), y,
     ggplot2::geom_smooth(method = 'loess', formula = 'y ~ x') + 
     ggplot2::labs(x = "Date", y = "cold - warm (C)",
                   title = sprintf("Cold Blob - Warm Spot using %s", what)) + 
-    ggplot2::facet_wrap(~source, scales = "free_y", ncol = 1)
+    ggplot2::facet_wrap(~source, scales = "fixed", ncol = 1)
   
 }

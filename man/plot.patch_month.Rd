@@ -4,7 +4,7 @@
 \alias{plot.patch_month}
 \title{Plot patch_month data}
 \usage{
-\method{plot}{patch_month}(x = read_patch_month(), y, what = "median", view = "diff", ...)
+\method{plot}{patch_month}(x = read_patch_month(), y, what = "median", view = c("diff", "map"), ...)
 }
 \arguments{
 \item{x}{tibble of class "patch_month"}
