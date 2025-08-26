@@ -2,9 +2,12 @@
 
 export(gulfstream_path)
 export(read_bathymetry)
+export(read_coastline)
 export(read_gsgi)
 export(read_gsi)
 export(read_moc_transports)
+export(read_patch_bbs)
+export(read_patch_month)
 export(read_rapid_mocha)
 export(read_usn)
 export(root_path)

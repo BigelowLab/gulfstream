@@ -4,7 +4,7 @@
 \alias{read_gsgi}
 \title{Read Gulf Stream Gradient Index data}
 \format{
-data frame with columns
+data frame with the following variables
 \describe{
 \item{date}{Date class}
 \item{SST.N.deseason}{numeric, deseasoned SST north}

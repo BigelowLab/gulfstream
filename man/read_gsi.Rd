@@ -4,7 +4,7 @@
 \alias{read_gsi}
 \title{Read Gulf Stream Index data}
 \format{
-Data frame with columns
+data frame with the following variables
 \describe{
 \item{date}{Date class}
 \item{Time}{numeric, year.month}

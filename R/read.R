@@ -5,7 +5,7 @@
 #' @source <https://ocean.weather.gov/gulf_stream_text.php>
 #' @export
 #' @return sf LINESTRING table
-#' #' @format Spatial data frame with columns
+#' #' @format Spatial data frame with the following variables
 #' \describe{
 #' \item{date}{Date class}
 #' \item{wall}{either "north" or "south"}
@@ -23,7 +23,7 @@ read_usn = function(){
 #' @source <https://noaa-edab.github.io/ecodata/index.html>
 #' @export
 #' @return table
-#' @format Data frame with columns
+#' @format data frame with the following variables
 #' \describe{
 #' \item{date}{Date class}
 #' \item{Time}{numeric, year.month}
@@ -43,7 +43,7 @@ read_gsi = function(){
 #' @source <https://www2.whoi.edu/staff/ykwon/data/>
 #' @export
 #' @return  table
-#' @format data frame with columns
+#' @format data frame with the following variables
 #' \describe{
 #' \item{date}{Date class}
 #' \item{SST.N.deseason}{numeric, deseasoned SST north}
@@ -64,7 +64,7 @@ read_gsgi = function(){
 #' @source <http://www.rapid.ac.uk/rapidmoc>
 #' @export
 #' @return  table
-#' @format data frame with columns
+#' @format data frame with the following variables
 #' \describe{
 #' \item{date}{Date}
 #' \item{moc_mar_hc10}{MOC transports}
@@ -89,7 +89,7 @@ read_moc_transports = function(){
 #' @source <https://mocha.earth.miami.edu/mocha/data/index.html>
 #' @export
 #' @return  table
-#' @format data frame with columns
+#' @format data frame with the following variables
 #' \describe{
 #' \item{Q_eddy}{The interior gyre component due to spatially correlated v_T variability across the interior. (W)}
 #' \item{Q_ek}{Ekman heat transport (W)}
@@ -120,5 +120,62 @@ read_moc_transports = function(){
 #' }
 read_rapid_mocha = function(){
   file = system.file("extdata/rapid_mocha.rds")
+  readRDS(file)
+}
+
+#' Read cold-warm blob patch data for two data sources: OISST and ERSST
+#' 
+#' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
+#' 
+#' @source <https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
+#' @source <https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
+#' @export
+#' @return  table
+#' @format data frame with the following variables
+#' \describe{
+#' \item{date}{Date class for the month (always the first)}
+#' \item{region}{chr, region name}
+#' \item{source}{chr, data source}
+#' \item{min}{min of values in region, deg C}
+#' \item{q25}{25th percentile of values in region, deg C}
+#' \item{median}{median of values in region, deg C}
+#' \item{mean}{mean of values in region, deg C}
+#' \item{q75}{75th percentile of values in region, deg C}
+#' \item{max}{max of values in region, deg C}
+#' }
+read_patch_month = function(){
+  file = system.file("extdata/patch_month.rds")
+  readRDS(file)
+}
+
+
+
+#' Read cold-warm blob patch data for two data sources: OISST and ERSST
+#' 
+#' Data are assembled and managed using the [gstream R package](https://github.com/BigelowLab/gstream), and then copied to this package.
+#' 
+#' @source <https://www.ncei.noaa.gov/products/optimum-interpolation-sst>
+#' @source <https://www.ncei.noaa.gov/products/extended-reconstructed-sst>
+#' @export
+#' @return sf table
+#' @format spatial data frame with the following variables
+#' \describe{
+#' \item{name}{chr, the name of the region}
+#' }
+read_patch_bbs = function(){
+  file = system.file("extdata/patch_bbs.rds")
+  readRDS(file)
+}
+
+
+#' Read a simplified medium resolution coastline for the Northwest Atlantic
+#' 
+#' Clipped with this bounding box: xmin = -80, ymin = 30, xmax = -10, ymax = 66
+#' 
+#' @source <https://www.naturalearthdata.com/>
+#' @export
+#' @return sfc_GEOMETRY object
+read_coastline = function(){
+  file = system.file("extdata/coast_medium.rds")
   readRDS(file)
 }

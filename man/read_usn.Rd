@@ -11,7 +11,7 @@ read_usn()
 }
 \value{
 sf LINESTRING table
-#' @format Spatial data frame with columns
+#' @format Spatial data frame with the following variables
 \describe{
 \item{date}{Date class}
 \item{wall}{either "north" or "south"}

@@ -4,7 +4,7 @@
 \alias{read_rapid_mocha}
 \title{Read RAPID-MOCHA heat transport data}
 \format{
-data frame with columns
+data frame with the following variables
 \describe{
 \item{Q_eddy}{The interior gyre component due to spatially correlated v_T variability across the interior. (W)}
 \item{Q_ek}{Ekman heat transport (W)}

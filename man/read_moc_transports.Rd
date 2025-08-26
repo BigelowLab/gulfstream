@@ -4,7 +4,7 @@
 \alias{read_moc_transports}
 \title{Read RAPID MOC transport data}
 \format{
-data frame with columns
+data frame with the following variables
 \describe{
 \item{date}{Date}
 \item{moc_mar_hc10}{MOC transports}
