@@ -12,6 +12,7 @@ Imports:
   lubridate,
   ggplot2,
   dplyr,
+  tidyr,
   shiny
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Ben Tupper <btupper@bigelow.org>
