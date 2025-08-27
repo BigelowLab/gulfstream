@@ -54,8 +54,26 @@ plot.usn = function(x = read_usn(), y,
     xweek = dplyr::filter(x, 
                           woy == iweek)
     
+    #b = sf::st_bbox(bb)
+    #xr = b[['xmax']] - b[['xmin']]
+    #yr = b[['ymax']] - b[['ymin']]
+    today = Sys.Date()
+    lubridate::week(today) <- iweek
+    
+    #txt = dplyr::tibble(x = b[['xmin']] + 0.01*xr,
+    #                    y = b[['ymax']] - 0.05*yr,
+    #                    label = sprintf("Week %i starts %s", iweek,
+    #                                    format(today, "%Y-%m-%d"))) |>
+    #  sf::st_as_sf(coords = c("x", "y"), crs = sf::st_crs(x))
+    caption = sprintf("Week %i starts %s\nsource: https://ocean.weather.gov/gulf_stream_latest.txt\nshowing %i earlier %s wall locations from the same week of year in grey", 
+                      iweek,
+                      format(today, "%Y-%m-%d"),
+                      nrow(xweek),
+                      paste(walls, collapse = " & "))
     gg = ggplot() +
       stars::geom_stars(data = bathy, show.legend = FALSE) + 
+      #ggplot2::geom_text(data = txt,
+      #                   mapping = ggplot2::aes(label = label)) + 
       ggplot2::geom_sf(data = xweek, 
               col = "grey", 
               alpha = 0.5) +
@@ -63,8 +81,7 @@ plot.usn = function(x = read_usn(), y,
               mapping = ggplot2::aes(color = Date),
               linewidth = 1) +
       ggplot2::theme_void() + 
-      ggplot2::labs(caption = sprintf("source: https://ocean.weather.gov/gulf_stream_latest.txt\nshowing %i earlier north wall locations\nfrom the same week of year in grey", 
-                             nrow(xweek)) )
+      ggplot2::labs(caption = caption )
   } else {
     gg = ggplot() +
       stars::geom_stars(data = bathy, show.legend = FALSE) + 

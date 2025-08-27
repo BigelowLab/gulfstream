@@ -56,7 +56,8 @@ plot.patch_month = function(x = read_patch_month(), y,
            gg = ggplot2::ggplot() + 
              ggplot2::geom_sf(data = coast) + 
              ggplot2::geom_sf(data = bb,
-                              mapping = ggplot2::aes(fill = region)) + 
+                              mapping = ggplot2::aes(color = region),
+                              linewidth = 2, fill = NA) + 
              ggplot2::coord_sf(crs = "+proj=lcc +lat_1=50 +lat_2=65 +lon_0=-50")
            gg},
          NULL
