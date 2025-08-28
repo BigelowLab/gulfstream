@@ -5,7 +5,9 @@
 \title{Read the bathymetry map}
 \usage{
 read_bathymetry(
-  filename = system.file("extdata/bathy.tif", package = "gulfstream")
+  name = "usn",
+  filename = system.file(sprintf("extdata/bathy_\%s.tif", name[1]), package =
+    "gulfstream")
 )
 }
 \arguments{

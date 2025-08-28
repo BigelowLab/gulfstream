@@ -1,4 +1,5 @@
 path = gulfstream::gulfstream_path()
+devtools::document(path)
 devtools::install(path, upgrade = FALSE)
 
 orig = setwd(path)

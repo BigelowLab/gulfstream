@@ -1,14 +1,3 @@
-#' Retrieve the preferred bounding box
-#' 
-#' @export
-#' @param x num, 4 elements vector with bbox coords
-#' @return sfc_POLYGON object
-usn_bb = function(x = c(xmin = -82,  ymin = 23.5,  xmax = -38,  ymax = 47.8)){
-  x |>
-    sf::st_bbox(bb, crs = 4326) |> 
-    sf::st_as_sfc()
-}
-
 #' Plot a week-of-year map highighlighting the most recent data
 #'
 #' @export
@@ -26,13 +15,13 @@ plot.usn = function(x = read_usn(), y,
                      walls = "north",
                      iweek = lubridate::week(Sys.Date()),
                      most_recent = 4,
-                     bb = usn_bb(),
+                     bb = gulfstream_bb("usn"),
                      bathy = read_bathymetry(),
                      ...){
   
   if(FALSE){
     walls = "north"
-    x = read_usn()
+    x = gulfstream_bb("usn")
     iweek = lubridate::week(Sys.Date())
     most_recent = 4
     bb = usn_bb()

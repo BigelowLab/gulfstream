@@ -10,7 +10,7 @@
   walls = "north",
   iweek = lubridate::week(Sys.Date()),
   most_recent = 4,
-  bb = usn_bb(),
+  bb = gulfstream_bb("usn"),
   bathy = read_bathymetry(),
   ...
 )
