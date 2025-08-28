@@ -53,6 +53,7 @@ plot.patch_month = function(x = read_patch_month(), y,
            bb = read_patch_bbs() |>
              dplyr::slice(1:2) |>
              dplyr::rename(region = "name")
+           
            #bathy = read_bathymetry()
            gg = ggplot2::ggplot() + 
              ggplot2::geom_sf(data = coast) + 

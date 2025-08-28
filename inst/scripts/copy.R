@@ -40,7 +40,9 @@ x = gstream::read_patch_month() |>
 
 # coastline
 ofile = gulfstream_path("inst/extdata/coast_medium.rds")
-coast = rnaturalearth::ne_coastline(returnclass = "sf", scale = "medium")
-b = sf::st_bbox(c(xmin = -100, ymin = 10, xmax = 110, ymax = 75), crs = 4326)
-cst = sf::st_crop(sf::st_geometry(sf::st_simplify(coast)), b) |>
+coast = rnaturalearth::ne_coastline(returnclass = "sf", scale = "medium") |>
+  sf::st_geometry() |>
+  sf::st_simplify()
+b = sf::st_bbox(c(xmin = -100, ymin = 10, xmax = 10, ymax = 75), crs = 4326)
+cst = sf::st_crop(coast, b) |>
   saveRDS(ofile)
