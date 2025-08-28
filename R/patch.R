@@ -48,11 +48,12 @@ plot.patch_month = function(x = read_patch_month(), y,
                     return(gg)
                   },
          "map" = {
+           
+           coast = read_coastline()
            bb = read_patch_bbs() |>
              dplyr::slice(1:2) |>
              dplyr::rename(region = "name")
-           coast = read_coastline()
-           bathy = read_bathymetry()
+           #bathy = read_bathymetry()
            gg = ggplot2::ggplot() + 
              ggplot2::geom_sf(data = coast) + 
              ggplot2::geom_sf(data = bb,
