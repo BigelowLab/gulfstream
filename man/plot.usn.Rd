@@ -10,6 +10,7 @@
   walls = "north",
   iweek = lubridate::week(Sys.Date()),
   most_recent = 4,
+  graphics = c("ggplot2", "leaflet")[2],
   bb = gulfstream_bb("usn"),
   bathy = read_bathymetry(),
   ...
@@ -27,6 +28,8 @@ If NULL then plot all available records for the wall.}
 
 \item{most_recent}{num, the number of recent records to highlight}
 
+\item{graphics}{chr, one of 'ggplot2' or 'leaflet' to specify the base plotting}
+
 \item{bb}{num, 4 element bounding box vector}
 
 \item{bathy}{NULL or stars, if NULL we read on for you}
@@ -34,7 +37,7 @@ If NULL then plot all available records for the wall.}
 \item{...}{ignored}
 }
 \value{
-a ggplot2 object
+a ggplot2 or leaflet object
 }
 \description{
 Plot a week-of-year map highighlighting the most recent data

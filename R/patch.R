@@ -4,7 +4,7 @@
 #' @export
 #' @param x tibble of class "patch_month"
 #' @param what chr, the name of the variable to plot
-#' @return tibble with cold - warm difference
+#' @return tibble with warm - cold difference
 patch_month_diff = function(x = read_patch_month(), what = "median"){
   what = tolower(what[1])
   y = x |>
@@ -15,7 +15,7 @@ patch_month_diff = function(x = read_patch_month(), what = "median"){
         tidyr::pivot_wider(tbl,
                            values_from = dplyr::all_of(what[1]),
                            names_from = dplyr::all_of("region")) |>
-          dplyr::mutate(dT = .data$cold_blob - .data$warm_spot)
+          dplyr::mutate(dT = .data$warm_spot - .data$cold_blob)
       }, .keep = TRUE) |>
     dplyr::bind_rows() |>
     dplyr::mutate(what = what)
@@ -84,8 +84,8 @@ plot.patch_month_diff = function(x = patch_month_diff(), y,
                   mapping = ggplot2::aes(x = date, y = dT )) +
     ggplot2::geom_line() +
     ggplot2::geom_smooth(method = 'loess', formula = 'y ~ x') + 
-    ggplot2::labs(x = "Date", y = "cold - warm (C)",
-                  title = sprintf("Cold Blob - Warm Spot using %s", what)) + 
+    ggplot2::labs(x = "Date", y = "warm - cold (C)",
+                  title = sprintf("Warm Spot - Cold Blob showing %s", what)) + 
     ggplot2::facet_wrap(~source, scales = "fixed", ncol = 1)
   
 }

@@ -12,7 +12,7 @@ patch_month_diff(x = read_patch_month(), what = "median")
 \item{what}{chr, the name of the variable to plot}
 }
 \value{
-tibble with cold - warm difference
+tibble with warm - cold difference
 }
 \description{
 Compute differences of patch_month data

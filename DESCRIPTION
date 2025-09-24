@@ -11,6 +11,7 @@ Imports:
   sf,
   lubridate,
   ggplot2,
+  leaflet,
   dplyr,
   tidyr,
   shiny
