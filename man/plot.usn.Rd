@@ -2,6 +2,7 @@
 % Please edit documentation in R/usn.R
 \name{plot.usn}
 \alias{plot.usn}
+\alias{add_usn_layer}
 \title{Plot a week-of-year map highighlighting the most recent data}
 \usage{
 \method{plot}{usn}(
@@ -14,6 +15,15 @@
   bb = gulfstream_bb("usn"),
   bathy = read_bathymetry(),
   ...
+)
+
+add_usn_layer(
+  map,
+  x = read_usn(),
+  walls = "north",
+  iweek = lubridate::week(Sys.Date()),
+  most_recent = 4,
+  bb = gulfstream_bb("usn")
 )
 }
 \arguments{
@@ -41,4 +51,6 @@ a ggplot2 or leaflet object
 }
 \description{
 Plot a week-of-year map highighlighting the most recent data
+
+Add layers to a leaflet basemap
 }

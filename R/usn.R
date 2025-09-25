@@ -31,84 +31,95 @@ plot.usn = function(x = read_usn(), y,
     graphics = "leaflet"
   }
   
-  if (!inherits(bb, "sf")) bb = sf::st_bbox(bb, crs = 4326) |>
-                                sf::st_as_sfc() |>
-                                sf::st_as_sf()
-  
-  x = suppressWarnings(sf::st_crop(x, bb) |>
-    dplyr::filter(wall %in% walls) |>
-    dplyr::ungroup() |>
-    dplyr::arrange(.data$date))
-  
-  recent = x |>
-   dplyr::slice_tail(n = most_recent[1]) |>
-    dplyr::mutate(Date = format(date, "%Y-%m-%d"))
-  
-  if (!is.null(iweek)){
-    xweek = dplyr::filter(x, 
-                          woy == iweek)
-    
-    today = Sys.Date()
-    lubridate::week(today) <- iweek
-  }
+  # if (!inherits(bb, "sf")) bb = sf::st_bbox(bb, crs = 4326) |>
+  #                               sf::st_as_sfc() |>
+  #                               sf::st_as_sf()
+  # 
+  # x = suppressWarnings(sf::st_crop(x, bb) |>
+  #   dplyr::filter(wall %in% walls) |>
+  #   dplyr::ungroup() |>
+  #   dplyr::arrange(.data$date))
+  # 
+  # recent = x |>
+  #  dplyr::slice_tail(n = most_recent[1]) |>
+  #   dplyr::mutate(Date = format(date, "%Y-%m-%d"))
+  # 
+  # if (!is.null(iweek)){
+  #   xweek = dplyr::filter(x, 
+  #                         woy == iweek)
+  #   
+  #   today = Sys.Date()
+  #   lubridate::week(today) <- iweek
+  # }
   
   if (tolower(graphics[1]) == "leaflet"){
-    b = sf::st_bbox(bb)
-    recent_pal = leaflet::colorFactor("Dark2", domain = recent$Date)
-    if (!is.null(iweek)){
+    #recent_pal = leaflet::colorFactor("Dark2", domain = recent$Date)
+    #if (!is.null(iweek)){
       # see https://github.com/rstudio/leaflet/issues/841
       # for the basemap selection
       gr = leaflet::leaflet() |>
         leaflet::addProviderTiles("Esri.OceanBasemap",
           options = leaflet::providerTileOptions(variant = "Ocean/World_Ocean_Base")) |>
-        leaflet::addPolylines(
-          data = xweek,
-          opacity = 0.2,
-          weight = 2,
-          color = "black") |>
-        leaflet::addPolylines(
-          data = recent,
-          color = ~recent_pal(recent$Date),
-          opacity = 1,
-          weight = 3,
-          label = ~Date) |>
-        leaflet::addLegend("bottomright",
-                           title = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", 
-                                     sprintf("%s wall", paste(walls, collapse = " and ")), 
-                                      perl=TRUE),
-                           pal = recent_pal,
-                           values = ~Date,
-                           data = recent,
-                           opacity = 1) |>
-        leaflet::setMaxBounds(b[['xmin']], b[['ymin']], 
-                              b[['xmax']], b[['ymax']])
-    } else {
-     
-      # see https://github.com/rstudio/leaflet/issues/841
-      gr = leaflet::leaflet() |>
-        leaflet::addProviderTiles("Esri.OceanBasemap",
-                                  options = leaflet::providerTileOptions(
-                                    devtools::documet(variant = "Ocean/World_Ocean_Base"))) |>
-        leaflet::addPolylines(
-          data = x,
-          opacity = 0.05,
-          weight = 1,
-          color = "black") |>
-        leaflet::addPolylines(
-          data = recent,
-          color = ~recent_pal(recent$Date),
-          opacity = 1,
-          weight = 3,
-          label = ~Date) |>
-        leaflet::addLegend("bottomright",
-                           title = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", 
-                                        sprintf("%s wall", paste(walls, collapse = " and ")), 
-                                        perl=TRUE),
-                           pal = recent_pal,
-                           values = ~Date,
-                           data = recent,
-                           opacity = 1)
-    }
+        add_usn_layer(x = x,
+                          walls = walls,
+                          iweek = iweek,
+                          most_recent = most_recent,
+                          bb = bb)
+        #leaflet::addPolylines(
+        #  data = xweek,
+        #  opacity = 0.2,
+        #  weight = 2,
+        #  color = "black",
+        #  layerId = "base_polylines") |>
+        #leaflet::addPolylines(
+        #  data = recent,
+        #  color = ~recent_pal(recent$Date),
+        #  opacity = 1,
+        #  weight = 3,
+        #  label = ~Date,
+        #  layerId = "week_polylines") |>
+        #leaflet::addLegend("bottomright",
+        #                   title = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", 
+        #                             sprintf("%s wall", paste(walls, collapse = " and ")), 
+        #                              perl=TRUE),
+        #                   pal = recent_pal,
+        #                   values = ~Date,
+        #                   data = recent,
+        #                   opacity = 1)
+    # else {
+    #
+    # # see https://github.com/rstudio/leaflet/issues/841
+    # gr = leaflet::leaflet() |>
+    #   leaflet::addProviderTiles("Esri.OceanBasemap",
+    #                             options = leaflet::providerTileOptions(
+    #                               devtools::documet(variant = "Ocean/World_Ocean_Base"))) |>
+    #   add_usn_polylines(x = x,
+    #                     walls = walls,
+    #                     iweek = iweek,
+    #                     most_recent = most_recent,
+    #                     bb = bb)
+        # leaflet::addPolylines(
+        #   data = x,
+        #   opacity = 0.05,
+        #   weight = 1,
+        #   color = "black",
+        #   layerId = "base_polylines") |>
+        # leaflet::addPolylines(
+        #   data = recent,
+        #   color = ~recent_pal(recent$Date),
+        #   opacity = 1,
+        #   weight = 3,
+        #   label = ~Date,
+        #   layerId = "base_polylines") |>
+        # leaflet::addLegend("bottomright",
+        #                    title = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", 
+        #                                 sprintf("%s wall", paste(walls, collapse = " and ")), 
+        #                                 perl=TRUE),
+        #                    pal = recent_pal,
+        #                    values = ~Date,
+        #                    data = recent,
+        #                    opacity = 1)
+    #}
     
   } else {
     
@@ -157,4 +168,76 @@ plot.usn = function(x = read_usn(), y,
     }
   }
   gr
+}
+
+
+#' Add layers to a leaflet basemap
+#' @rdname plot.usn
+#' @export
+add_usn_layer = function(map,
+                             x = read_usn(),
+                             walls = "north",
+                             iweek = lubridate::week(Sys.Date()),
+                             most_recent = 4,
+                             bb = gulfstream_bb("usn")){
+  if (FALSE){
+    walls = "north"
+    x = read_usn()
+    iweek = lubridate::week(Sys.Date())
+    most_recent = 4
+    bb = gulfstream_bb("usn")
+  }
+  
+ 
+  
+  if (!inherits(bb, "sf")) bb = sf::st_bbox(bb, crs = 4326) |>
+      sf::st_as_sfc() |>
+      sf::st_as_sf()
+  
+  x = suppressWarnings(sf::st_crop(x, bb) |>
+                         dplyr::filter(wall %in% walls) |>
+                         dplyr::ungroup() |>
+                         dplyr::arrange(.data$date))
+  
+  recent = x |>
+    dplyr::slice_tail(n = most_recent[1]) |>
+    dplyr::mutate(Date = format(date, "%Y-%m-%d"))
+  
+  b = sf::st_bbox(bb)
+  recent_pal = leaflet::colorFactor("Dark2", domain = recent$Date)
+  
+  all_weeks = is.null(iweek)
+  if (!all_weeks){
+    xweek = dplyr::filter(x, 
+                          woy == iweek)
+    today = Sys.Date()
+    lubridate::week(today) <- iweek
+  } else {
+    xweek = NULL
+  }
+  data = if(all_weeks) x else xweek
+  opacity = if(all_weeks) 0.05 else 0.2
+  weight = if(all_weeks) 1 else 2
+  map |>                         
+    leaflet::addPolylines(
+      data = data,
+      opacity = opacity,
+      weight = weight,
+      color = "black",
+      group = "base_polylines") |>
+   leaflet::addPolylines(
+     data = recent,
+     color = ~recent_pal(recent$Date),
+     opacity = 1,
+     weight = 3,
+     label = ~Date,
+     group = "week_polylines") |>
+   leaflet::addLegend("bottomright",
+                      title = gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", 
+                                   sprintf("%s wall", paste(walls, collapse = " and ")), 
+                                   perl=TRUE),
+                      pal = recent_pal,
+                      values = ~Date,
+                      data = recent,
+                      opacity = 1)
 }
