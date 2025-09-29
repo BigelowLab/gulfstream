@@ -1,8 +1,10 @@
 suppressPackageStartupMessages({
   library(gulfstream)
   library(shiny)
+  library(lubridate)
   library(ggplot2)
   library(leaflet)
+  library(sf)
 })
 
 # pre-load the data for ease
@@ -47,7 +49,7 @@ ui <- navbarPage(
   
   tabPanel("USN",  fluidRow(
     uiOutput("textUSN"),
-    radioButtons("rbUSNwall", "Choose one:",
+    radioButtons("rbUSN", "Choose one:",
                  choiceNames = c("north wall", 
                                  "south wall"),
                  choiceValues = list("north", "south"))),
@@ -110,19 +112,33 @@ server <- function(input, output, session) {
     tagList("The USN (gsgi) publishes estimated north/south wall position coordinates. Data are provided via ", 
             uri_usn)
   })
-  wallUSN = reactive(input$rbUSNwall)
-  weekUSN = reactive(input$sliderUSN)
+  #wallUSN = reactive(input$rbUSN)
+  #weekUSN = reactive(input$sliderUSN)
+  optsUSN = reactive({
+    req(input$rbUSN)
+    req(input$sliderUSN)
+    list(wallUSN = input$rbUSN,
+         weekUSN = input$sliderUSN)
+  })
   output$mapUSN = renderLeaflet({
     #initial rendering
-    plot(usn, wall = wallUSN(), iweek = weekUSN(), graphics = "leaflet")
+    #plot(usn, wall = wallUSN(), iweek = weekUSN(), graphics = "leaflet")
+    bb = gulfstream_bb("usn")
+    leaflet::leaflet(data = bb) |>
+      leaflet::addProviderTiles("Esri.OceanBasemap",
+                                options = leaflet::providerTileOptions(variant = "Ocean/World_Ocean_Base"))
   })
   
-  observe({
-    leafletProxy("mapUSN") |>
-      clearShapes() |>
-      clearControls() |>
-      add_usn_layer(x = usn, wall = wallUSN(), iweek = weekUSN())
-  })
+  observeEvent(optsUSN(),
+    {
+      leafletProxy("mapUSN") |>
+        clearShapes() |>
+        clearControls() |>
+        add_usn_layer(x = usn, 
+                      wall = opts()[['wallUSN']], 
+                      iweek = opts()[['weekUSN']])
+    }
+  )
   
   # HEAT
   output$plotRAPID = renderPlot({

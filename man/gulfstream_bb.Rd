@@ -4,7 +4,10 @@
 \alias{gulfstream_bb}
 \title{Retrieve the preferred bounding box}
 \usage{
-gulfstream_bb(region = c("usn", "northatlantic")[1])
+gulfstream_bb(
+  region = c("usn", "northatlantic")[1],
+  form = c("sf", "bbox", "numeric")[1]
+)
 }
 \arguments{
 \item{region}{chr one of "usn" or "northatlantic"}

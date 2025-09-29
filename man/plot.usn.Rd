@@ -6,7 +6,8 @@
 \title{Plot a week-of-year map highighlighting the most recent data}
 \usage{
 \method{plot}{usn}(
-  x = read_usn(),
+  x = dplyr::mutate(read_usn(), Date = format(date, "\%Y-\%m-\%d"), week =
+    lubridate::week(date)),
   y,
   walls = "north",
   iweek = lubridate::week(Sys.Date()),
@@ -19,7 +20,8 @@
 
 add_usn_layer(
   map,
-  x = read_usn(),
+  x = dplyr::mutate(read_usn(), Date = format(date, "\%Y-\%m-\%d"), week =
+    lubridate::week(date)),
   walls = "north",
   iweek = lubridate::week(Sys.Date()),
   most_recent = 4,
