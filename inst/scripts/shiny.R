@@ -10,7 +10,9 @@ suppressPackageStartupMessages({
 # pre-load the data for ease
 gsi = read_gsi()
 gsgi = read_gsgi()
-usn = read_usn()
+usn = read_usn() |>
+  dplyr::mutate(Date = format(date, "%Y-%m-%d"),
+                week = lubridate::week(date))
 patch = read_patch_month()
 amoc = read_moc_transports()
 heat = read_rapid_mocha()
@@ -49,11 +51,11 @@ ui <- navbarPage(
   
   tabPanel("USN",  fluidRow(
     uiOutput("textUSN"),
-    radioButtons("rbUSN", "Choose one:",
+    radioButtons("wallUSN", "Choose one:",
                  choiceNames = c("north wall", 
                                  "south wall"),
                  choiceValues = list("north", "south"))),
-    sliderInput("sliderUSN", "select week of year",
+    sliderInput("weekUSN", "select week of year",
                 min = 1, 
                 max = 52, 
                 value = lubridate::week(Sys.Date()), 
@@ -112,33 +114,34 @@ server <- function(input, output, session) {
     tagList("The USN (gsgi) publishes estimated north/south wall position coordinates. Data are provided via ", 
             uri_usn)
   })
-  #wallUSN = reactive(input$rbUSN)
-  #weekUSN = reactive(input$sliderUSN)
-  optsUSN = reactive({
-    req(input$rbUSN)
-    req(input$sliderUSN)
-    list(wallUSN = input$rbUSN,
-         weekUSN = input$sliderUSN)
-  })
   output$mapUSN = renderLeaflet({
-    #initial rendering
-    #plot(usn, wall = wallUSN(), iweek = weekUSN(), graphics = "leaflet")
-    bb = gulfstream_bb("usn")
+    bb = gulfstream_bb("usn", form = "numeric")
     leaflet::leaflet(data = bb) |>
       leaflet::addProviderTiles("Esri.OceanBasemap",
-                                options = leaflet::providerTileOptions(variant = "Ocean/World_Ocean_Base"))
+                                options = leaflet::providerTileOptions(variant = "Ocean/World_Ocean_Base")) |>
+      leaflet::fitBounds(bb[1], bb[2], bb[3], bb[4])
   })
   
-  observeEvent(optsUSN(),
-    {
-      leafletProxy("mapUSN") |>
-        clearShapes() |>
-        clearControls() |>
-        add_usn_layer(x = usn, 
-                      wall = opts()[['wallUSN']], 
-                      iweek = opts()[['weekUSN']])
-    }
-  )
+  observeEvent(input$wallUSN,
+               {
+                 req(input$weekUSN)
+                 leafletProxy("mapUSN") |>
+                   clearShapes() |>
+                   clearControls() |>
+                   gulfstream::add_usn_layer(x = usn, 
+                                 wall = input$wallUSN, 
+                                 iweek = isolate(input$weekUSN))
+               })
+  
+  observeEvent(input$weekUSN,
+               {
+                 leafletProxy("mapUSN") |>
+                   clearShapes() |>
+                   clearControls() |>
+                   gulfstream::add_usn_layer(x = usn, 
+                                 wall = isolate(input$wallUSN), 
+                                 iweek = input$weekUSN)
+               })
   
   # HEAT
   output$plotRAPID = renderPlot({
