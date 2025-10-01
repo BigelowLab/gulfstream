@@ -25,7 +25,7 @@ heat = read_rapid_mocha()
 #  USN draws basemap with gs tracks superimposed
 #  PATCH radio buttons and a plot and a static map
 ui <- navbarPage(
-  
+  id = "tabSwitch",
   "Gulf Stream",   
   
   tabPanel("GSI", 
@@ -68,6 +68,8 @@ ui <- navbarPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
+  
+  
   
   # GSI
   gsi_uri <- a("ecodata R package", href="https://noaa-edab.github.io/tech-doc/index.html")
@@ -119,29 +121,45 @@ server <- function(input, output, session) {
     leaflet::leaflet(data = bb) |>
       leaflet::addProviderTiles("Esri.OceanBasemap",
                                 options = leaflet::providerTileOptions(variant = "Ocean/World_Ocean_Base")) |>
-      leaflet::fitBounds(bb[1], bb[2], bb[3], bb[4])
+      leaflet::fitBounds(bb[1], bb[2], bb[3], bb[4]) 
   })
   
-  observeEvent(input$wallUSN,
+  optsUSN = reactive({
+    list(input$wallUSN,input$weekUSN)
+  })
+  
+  observeEvent(optsUSN(),
                {
-                 req(input$weekUSN)
+                 #if (input$tabSwitch != "USN") return(NULL)
+                 #req(input$weekUSN)
                  leafletProxy("mapUSN") |>
                    clearShapes() |>
                    clearControls() |>
                    gulfstream::add_usn_layer(x = usn, 
-                                 wall = input$wallUSN, 
-                                 iweek = isolate(input$weekUSN))
+                                             wall = input$wallUSN, 
+                                             iweek = input$weekUSN)
                })
   
-  observeEvent(input$weekUSN,
-               {
-                 leafletProxy("mapUSN") |>
-                   clearShapes() |>
-                   clearControls() |>
-                   gulfstream::add_usn_layer(x = usn, 
-                                 wall = isolate(input$wallUSN), 
-                                 iweek = input$weekUSN)
-               })
+  # observeEvent(input$wallUSN,
+  #              {
+  #                req(input$weekUSN)
+  #                leafletProxy("mapUSN") |>
+  #                  clearShapes() |>
+  #                  clearControls() |>
+  #                  gulfstream::add_usn_layer(x = usn, 
+  #                                wall = input$wallUSN, 
+  #                                iweek = isolate(input$weekUSN))
+  #              })
+  # 
+  # observeEvent(input$weekUSN,
+  #              {
+  #                leafletProxy("mapUSN") |>
+  #                  clearShapes() |>
+  #                  clearControls() |>
+  #                  gulfstream::add_usn_layer(x = usn, 
+  #                                wall = isolate(input$wallUSN), 
+  #                                iweek = input$weekUSN)
+  #              })
   
   # HEAT
   output$plotRAPID = renderPlot({

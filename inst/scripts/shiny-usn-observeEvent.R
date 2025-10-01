@@ -47,26 +47,41 @@ server <- function(input, output) {
       leaflet::fitBounds(bb[1], bb[2], bb[3], bb[4])
   })
   
-  observeEvent(input$wallUSN,
+  optsUSN = reactive({
+    list(input$wallUSN,input$weekUSN)
+  })
+  
+  observeEvent(optsUSN(),
                {
-                 req(input$weekUSN)
+                 #req(input$weekUSN)
                  leafletProxy("mapUSN") |>
                    clearShapes() |>
                    clearControls() |>
                    gulfstream::add_usn_layer(x = usn, 
                                  wall = input$wallUSN, 
-                                 iweek = isolate(input$weekUSN))
-               })
-  
-  observeEvent(input$weekUSN,
-               {
-                 leafletProxy("mapUSN") |>
-                   clearShapes() |>
-                   clearControls() |>
-                   gulfstream::add_usn_layer(x = usn, 
-                                 wall = isolate(input$wallUSN), 
                                  iweek = input$weekUSN)
                })
+  
+  # observeEvent(input$wallUSN,
+  #              {
+  #                req(input$weekUSN)
+  #                leafletProxy("mapUSN") |>
+  #                  clearShapes() |>
+  #                  clearControls() |>
+  #                  gulfstream::add_usn_layer(x = usn, 
+  #                                wall = input$wallUSN, 
+  #                                iweek = isolate(input$weekUSN))
+  #              })
+  # 
+  # observeEvent(input$weekUSN,
+  #              {
+  #                leafletProxy("mapUSN") |>
+  #                  clearShapes() |>
+  #                  clearControls() |>
+  #                  gulfstream::add_usn_layer(x = usn, 
+  #                                wall = isolate(input$wallUSN), 
+  #                                iweek = input$weekUSN)
+  #              })
   
 }
 
