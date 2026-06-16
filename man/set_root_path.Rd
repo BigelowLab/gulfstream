@@ -5,7 +5,7 @@
 \title{Set the gulfstream root path}
 \usage{
 set_root_path(
-  path = "/mnt/s1/projects/ecocast/corecode/R/gulfstream",
+  path = "/mnt/s1/projects/ecocast/corecode/R/gulf_stream/gulfstream",
   filename = "~/.gulfstream"
 )
 }

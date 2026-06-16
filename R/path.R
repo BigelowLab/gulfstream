@@ -13,7 +13,7 @@ root_path = function(filename = "~/.gulfstream"){
 #' @param path the path that defines the location of gulfstream root
 #' @param filename the name the file to store the path as a single line of text
 #' @return NULL invisibly
-set_root_path <- function(path = "/mnt/s1/projects/ecocast/corecode/R/gulfstream",
+set_root_path <- function(path = "/mnt/s1/projects/ecocast/corecode/R/gulf_stream/gulfstream",
                           filename = "~/.gulfstream"){
   cat(path, sep = "\n", file = filename)
   invisible(NULL)
