@@ -15,13 +15,13 @@ usn = read_usn() |>
                 week = lubridate::week(date))
 patch = read_patch_month()
 amoc = read_moc_transports()
-heat = read_rapid_mocha()
+rapid = read_rapid_mocha()
 
 # Define UI for application that tabs
 #  GIS radio buttons and a plot
 #  GSGI radio buttons and a plot
 #  AMOC a plot
-#  HEAT a plot
+#  RAPID a plot
 #  USN draws basemap with gs tracks superimposed
 #  PATCH radio buttons and a plot and a static map
 ui <- navbarPage(
@@ -62,7 +62,9 @@ ui <- navbarPage(
                 step = 1),
     leafletOutput("mapUSN")),
   tabPanel("AMOC", plotOutput("plotAMOC")),
-  tabPanel("RAPID", plotOutput("plotRAPID")),
+  tabPanel("RAPID", 
+           plotOutput("plotRAPID"),
+           verbatimTextOutput("textRAPID")),
   tabPanel("Patch", plotOutput("plotPatch")) )
 
 
@@ -161,7 +163,8 @@ server <- function(input, output, session) {
   #                                iweek = input$weekUSN)
   #              })
   
-  # HEAT
+  # RAPID
+  output$textRAPID <- renderText({ "Johns W.E., Elipot S., Smeed D.A., Moat B., King B., Volkov D.L., Smith R.H., (2023). Atlantic Meridional Overturning Circulation (AMOC) Heat Transport Time Series between April 2004 and December 2020 at 26.5°N (v.2020) [Dataset]. University of Miami Libraries. https://doi.org/10.17604/3nfq-va20" })
   output$plotRAPID = renderPlot({
     plot(rapid)
   })

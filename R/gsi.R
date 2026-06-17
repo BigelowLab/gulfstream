@@ -24,10 +24,12 @@ plot.gsi = function(x = read_gsi(), y,
     month_format = function(x){ month.abb[x] }
     
     gg = ggplot2::ggplot(data = xx,
-                         mapping = ggplot2::aes_(x = ~mon, y = ~Value, group = ~year)) +
+                         mapping = ggplot2::aes(x = .data$mon, 
+                                                 y = .data$Value, 
+                                                 group = .data$year)) +
       ggplot2::geom_line(color = "grey", alpha = 0.5) +
       ggplot2::geom_line(data = yy,
-                         mapping = ggplot2::aes_(x = ~mon, y = ~Value),
+                         mapping = ggplot2::aes(x = .data$mon, y = .data$Value),
                          color = "black") +
       ggplot2::labs(x = "Month", y = "Gulf Stream Index",
                     caption = "data source: https://noaa-edab.github.io/ecodata/") +
@@ -39,7 +41,9 @@ plot.gsi = function(x = read_gsi(), y,
                        year = format(.data$date, "%Y") |> as.numeric()) 
     mm = range(xx$year)
     gg = ggplot2::ggplot(data = xx, 
-                         mapping = ggplot2::aes_(x = ~year, y = ~Value, group = ~year)) + 
+                         mapping = ggplot2::aes(x = .data$year, 
+                                                 y = .data$Value, 
+                                                 group = .data$year)) + 
       ggplot2::geom_boxplot() +
       ggplot2::labs(x = "Year", y = "GSI", 
                     title = "Gulf Stream Index",

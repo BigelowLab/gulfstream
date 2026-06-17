@@ -23,13 +23,13 @@ plot.gsgi = function(x, y,
                        mon = format(date, "%m") |> as.numeric())
     yy = dplyr::slice_max(xx, year)
     gg = ggplot2::ggplot(data = xx, 
-                         mapping = ggplot2::aes_(x = ~mon, 
-                                                 y = ~dSST.deseason, 
-                                                 group = ~year))  +
+                         mapping = ggplot2::aes(x = .data$mon, 
+                                                y = .data$dSST.deseason, 
+                                                group = .data$year))  +
       ggplot2::geom_line(color = "grey", alpha = 0.5,) + 
       ggplot2::geom_line(data = yy,
-                         mapping = ggplot2::aes_(x = ~mon, 
-                                                 y = ~dSST.deseason),
+                         mapping = ggplot2::aes(x = .data$mon, 
+                                                 y = .data$dSST.deseason),
                          color = "black", 
                          linewidth = 1.5,
                          show.legend = TRUE) +
@@ -44,7 +44,9 @@ plot.gsgi = function(x, y,
                        year = format(.data$date, "%Y") |> as.numeric()) 
     mm = range(xx$year)
     gg = ggplot2::ggplot(data = xx, 
-                         mapping = ggplot2::aes_(x = ~year, y = ~dSST.deseason, group = ~year)) + 
+                         mapping = ggplot2::aes(x = .data$year, 
+                                                y = .data$dSST.deseason, 
+                                                group = .data$year)) + 
       ggplot2::geom_boxplot() +
       ggplot2::labs(x = "Year", y = "Gulf Stream SST Gradient Index",
                     caption = "data source: https://www2.whoi.edu/staff/ykwon/data/") + 
