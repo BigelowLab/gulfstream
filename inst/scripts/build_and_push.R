@@ -1,5 +1,5 @@
 
-devtools::install_github("noaa-edab/ecodata")
+remotes::install_github("NOAA-EDAB/ecodata", upgrade = FALSE)
 
 path = gulfstream::gulfstream_path()
 devtools::document(path)
