@@ -1,0 +1,109 @@
+---
+title: "Gulf Stream related data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The [gulfstream R package](https://github.com/BigelowLab/gulfstream) serves [Gulf Stream](https://www.nesdis.noaa.gov/about/k-12-education/oceans-coasts/what-the-gulf-stream) related data from a single package. All data are actively harvested and maintained using the [gstream R package](https://github.com/BigelowLab/gstream), but the [gulfstream R package](https://github.com/BigelowLab/gulfstream) is used for convenient serving of the same data in a portable package.
+
+## Requirements
+
+- [R v4.2+](https://www.r-project.org/)
+- [rlang](https://CRAN.R-project.org/package=rlang)
+- [dplyr](https://CRAN.R-project.org/package=dplyr)
+- [tidyr](https://CRAN.R-project.org/package=tidyr)
+- [ggplot2](https://CRAN.R-project.org/package=ggplot2)
+- [lubridate](https://CRAN.R-project.org/package=lubridate)
+- [sf](https://CRAN.R-project.org/package=sf)
+- [leaflet](https://CRAN.R-project.org/package=leaflet)
+- [shiny](https://CRAN.R-project.org/package=shiny)
+
+## Installation
+
+```
+remotes::install_github("BigelowLab/gulfstream")
+```
+
+# Data
+
+## Gulf Stream Index (GSI)
+
+The [Gulf Stream
+Index](https://en.wikipedia.org/wiki/Latitude_of_the_Gulf_Stream_and_the_Gulf_Stream_north_wall_index)
+provides a positional index. Data are provides via the
+[ecodata](https://noaa-edab.github.io/ecodata/) R package.
+
+```{r gsi}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(gulfstream)
+})
+
+read_gsi() |>
+  glimpse()
+```
+
+
+## Gulf Stream SST Gradient Index (GSGI)
+
+[Parfitt, Kwon, and Andres,
+2022](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2022GL100914)
+proposed a Gulf Stream Gradient Index. Data is served for 2004-2019
+[here](https://www2.whoi.edu/staff/ykwon/data/).
+
+> Parfitt, R., Y.-O. Kwon, and M. Andres, 2022: A monthly index for the
+> large-scale sea surface temperature gradient across the separated Gulf
+> Stream. Geophys. Res. Lett., 49, e2022GL100914.
+> <https://doi.org/10.1029/2022GL100914>.
+
+```{r gsgi}
+read_gsgi() |>
+  glimpse()
+```
+
+
+## Data from [RAPID](https://rapid.ac.uk)
+
+### [RAPID-AMOC](https://rapid.ac.uk/rapidmoc)
+
+Data from the RAPID AMOC monitoring project is funded by the Natural
+Environment Research Council and are freely available from
+www.rapid.ac.uk/rapidmoc.
+
+Reference for Version v2020.2 
+>Moat B.I.; Frajka-Williams E., Smeed
+D.A.; Rayner D.; Johns W.E.; Baringer M.O.; Volkov, D.; Collins, J.
+(2022). Atlantic meridional overturning circulation observed by the
+RAPID-MOCHA-WBTS (RAPID-Meridional Overturning Circulation and Heatflux
+Array-Western Boundary Time Series) array at 26N from 2004 to 2020
+(v2020.2), British Oceanographic Data Centre - Natural Environment
+Research Council, UK. <doi:10.5285/e91b10af-6f0a-7fa7-e053-6c86abc05a09>
+
+```{r amoc}
+read_moc_transports()|>
+  glimpse()
+```
+
+### [RAPID-MOCHA](https://mocha.earth.miami.edu/mocha/data/index.html)
+
+RAPID-MOCHA provides a heat transport time series.
+
+```{r mocha}
+read_rapid_mocha() |>
+  glimpse()
+```
+
+## Gulf Stream Wall locations from US Navy
+
+The daily data is hosted by by [NOAA’s Ocean Prediction
+Center](https://ocean.weather.gov/) In particular they post the US
+Navy’s [daily Gulf Stream point
+data](https://ocean.weather.gov/gulf_stream_latest.txt) for the north
+and south walls.
+
+```{r usn}
+read_usn()
+```
