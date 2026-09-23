@@ -4,12 +4,19 @@
 \alias{plot.patch_month_diff}
 \title{Plot patch_month difference data}
 \usage{
-\method{plot}{patch_month_diff}(x = patch_month_diff(), y, ...)
+\method{plot}{patch_month_diff}(
+  x = patch_month_diff(),
+  y,
+  map = plot(read_patch_month(), view = "map"),
+  ...
+)
 }
 \arguments{
 \item{x}{tibble of class "patch_month_diff"}
 
 \item{y}{ignored}
+
+\item{map}{NULL or ggplot2 object to inset}
 
 \item{...}{ignored}
 }

@@ -42,9 +42,10 @@ plot.patch_month = function(x = read_patch_month(), y,
   if (!what %in% colnames(x)) stop("please specify a variable in x - this wasn't found:", what)
   view = tolower(view[1])
   switch(view,
-         "diff" = {
+         "diff" = { 
+                    m = plot(x, view = "map")
                     d = patch_month_diff(x, what = what) 
-                    gg = plot(d, ...) 
+                    gg = plot(d, map = m, ...) 
                     return(gg)
                   },
          "map" = {
@@ -73,19 +74,27 @@ plot.patch_month = function(x = read_patch_month(), y,
 #' @export
 #' @param x tibble of class "patch_month_diff"
 #' @param y ignored
+#' @param map NULL or ggplot2 object to inset
 #' @param ... ignored
 #' @return ggplot2 object
 plot.patch_month_diff = function(x = patch_month_diff(), y, 
+                                 map = read_patch_month() |> plot(view = "map"),
                                 ...){
   
   what = tolower(x$what[1])
   
-  ggplot2::ggplot(data = x,
+  gg = ggplot2::ggplot(data = x,
                   mapping = ggplot2::aes(x = date, y = dT )) +
     ggplot2::geom_line() +
     ggplot2::geom_smooth(method = 'loess', formula = 'y ~ x') + 
     ggplot2::labs(x = "Date", y = "warm - cold (C)",
                   title = sprintf("Warm Spot - Cold Blob showing %s", what)) + 
     ggplot2::facet_wrap(~source, scales = "fixed", ncol = 1)
-  
+  if (!is.null(map)){
+    gg + 
+      ggplot2::annotation_custom(grob = ggplot2::ggplotGrob(map),
+                                 xmin = 1870, xmax = 1950,
+                                 ymin = 0, ymax = 10)
+  }
+  gg
 }
